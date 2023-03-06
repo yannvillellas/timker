@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:timker/widgets/timer_card.dart';
+import 'package:timker/util/dialog_box.dart';
+import 'package:timker/util/timer_card.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -9,21 +10,43 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-  void _addTimer() {} //TODO: dialog box or open the new timer_page
+  final _controller = TextEditingController();
 
-  void _removeTimer(int index) {} //TODO: as the video
+  List timerList = [];
 
-  List timerList = [
-    ["Timer 1", 10],
-    ["Timer 2", 20],
-  ];
+  void saveNewTimer() {
+    setState(() {
+      timerList.add([_controller.text, 10]);
+      _controller.clear();
+    });
+    Navigator.of(context).pop();
+  }
+
+  void _addTimer() {
+    showDialog(
+        context: context,
+        builder: (context) {
+          return DialogBox(
+            controller: _controller,
+            onSave: saveNewTimer,
+            onCancel: () => Navigator.of(context).pop(),
+          );
+        });
+  }
+  //TODO: timer button
+
+  void _removeTimer(int index) {
+    setState(() {
+      timerList.removeAt(index);
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title:
-            const Text('T I M K E R', style: TextStyle(color: Colors.yellow)),
+        title: const Text('TIMKER',
+            style: TextStyle(color: Colors.yellow, letterSpacing: 10)),
         elevation: 0,
       ),
       floatingActionButton: FloatingActionButton(
@@ -39,6 +62,7 @@ class _HomePageState extends State<HomePage> {
           return TimerCard(
             timerName: timerList[index][0],
             timerDuration: timerList[index][1],
+            removeTimer: (context) => _removeTimer(index),
           );
         },
       ),

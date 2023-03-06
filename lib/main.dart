@@ -16,6 +16,11 @@ class MyApp extends StatelessWidget {
       home: const HomePage(),
       theme: ThemeData.dark().copyWith(
         scaffoldBackgroundColor: const Color.fromARGB(255, 0, 0, 0),
+        textTheme: const TextTheme(
+          bodyLarge: TextStyle(color: Colors.yellow),
+          bodyMedium: TextStyle(color: Colors.yellow),
+          bodySmall: TextStyle(color: Colors.yellow),
+        ),
         appBarTheme: const AppBarTheme(
           color: Color.fromARGB(255, 0, 0, 0),
           elevation: 0,
