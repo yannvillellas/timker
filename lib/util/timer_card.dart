@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
+import 'package:timker/screens/timer_page.dart';
 
 class TimerCard extends StatelessWidget {
   final String timerName;
@@ -38,17 +39,23 @@ class TimerCard extends StatelessWidget {
                 ),
               ],
             ),
-            child: Container(
-              width: MediaQuery.of(context).size.width,
-              padding: const EdgeInsets.all(25.0),
-              decoration: BoxDecoration(
-                color: Colors.yellow,
-                borderRadius: BorderRadius.circular(12),
-              ),
-              child: Text(
-                timerName,
-                textAlign: TextAlign.left,
-                style: const TextStyle(color: Colors.black),
+            child: ElevatedButton(
+              onPressed: () {
+                Navigator.of(context).push(
+                    MaterialPageRoute(builder: (context) => const TimerPage()));
+              },
+              child: Container(
+                width: MediaQuery.of(context).size.width,
+                padding: const EdgeInsets.all(25.0),
+                decoration: BoxDecoration(
+                  color: Colors.yellow,
+                  borderRadius: BorderRadius.circular(12),
+                ),
+                child: Text(
+                  timerName,
+                  textAlign: TextAlign.left,
+                  style: const TextStyle(color: Colors.black),
+                ),
               ),
             ),
           ),
