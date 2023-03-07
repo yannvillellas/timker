@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:hive_flutter/hive_flutter.dart';
+import 'package:timker/data/database.dart';
 import 'package:timker/util/dialog_box.dart';
 import 'package:timker/util/timer_card.dart';
 
@@ -10,18 +12,32 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
+  final _myBox = Hive.box('myBox');
   final _controller = TextEditingController();
+  TimerDatabase db = TimerDatabase();
 
-  List timerList = [];
+  @override
+  void initState() {
+    //check if this is the first time ever the app is opened
+    if (_myBox.get('TIMERLIST') == null) {
+      db.createInitialData();
+    } else {
+      db.loadData();
+    }
+    super.initState();
+  }
 
+  //save a new timer
   void saveNewTimer() {
     setState(() {
-      timerList.add([_controller.text, 10]);
+      db.timerList.add([_controller.text, 10]);
       _controller.clear();
     });
     Navigator.of(context).pop();
+    db.updateDatabase();
   }
 
+  // show the dialgo box to add a new timer
   void _addTimer() {
     showDialog(
         context: context,
@@ -35,10 +51,12 @@ class _HomePageState extends State<HomePage> {
   }
   //TODO: timer button
 
+  // remove a timer
   void _removeTimer(int index) {
     setState(() {
-      timerList.removeAt(index);
+      db.timerList.removeAt(index);
     });
+    db.updateDatabase();
   }
 
   @override
@@ -57,11 +75,11 @@ class _HomePageState extends State<HomePage> {
         ),
       ),
       body: ListView.builder(
-        itemCount: timerList.length,
+        itemCount: db.timerList.length,
         itemBuilder: (context, index) {
           return TimerCard(
-            timerName: timerList[index][0],
-            timerDuration: timerList[index][1],
+            timerName: db.timerList[index][0],
+            timerDuration: db.timerList[index][1],
             removeTimer: (context) => _removeTimer(index),
           );
         },
