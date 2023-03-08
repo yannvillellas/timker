@@ -39,11 +39,9 @@ class TimerCard extends StatelessWidget {
                 ),
               ],
             ),
-            child: ElevatedButton(
-              onPressed: () {
-                Navigator.of(context).push(
-                    MaterialPageRoute(builder: (context) => const TimerPage()));
-              },
+            child: GestureDetector(
+              onTap: () => Navigator.of(context).push(
+                  MaterialPageRoute(builder: (context) => const TimerPage())),
               child: Container(
                 width: MediaQuery.of(context).size.width,
                 padding: const EdgeInsets.all(25.0),
