@@ -49,7 +49,6 @@ class _HomePageState extends State<HomePage> {
           );
         });
   }
-  //TODO: timer button
 
   // remove a timer
   void _removeTimer(int index) {

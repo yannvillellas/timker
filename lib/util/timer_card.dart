@@ -40,8 +40,8 @@ class TimerCard extends StatelessWidget {
               ],
             ),
             child: GestureDetector(
-              onTap: () => Navigator.of(context).push(
-                  MaterialPageRoute(builder: (context) => const TimerPage())),
+              onTap: () => Navigator.of(context).push(MaterialPageRoute(
+                  builder: (context) => TimerPage(timerName: timerName))),
               child: Container(
                 width: MediaQuery.of(context).size.width,
                 padding: const EdgeInsets.all(25.0),
