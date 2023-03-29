@@ -1,31 +1,56 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'dart:async';
 
-class TimerPage extends StatelessWidget {
+class TimerPage extends StatefulWidget {
   const TimerPage({Key? key, required this.timerName}) : super(key: key);
   final String timerName;
 
   @override
+  _TimerPageState createState() => _TimerPageState();
+}
+
+class _TimerPageState extends State<TimerPage> {
+  late Stopwatch _stopwatch;
+  late Timer _timer;
+
+  @override
+  void initState() {
+    super.initState();
+    _stopwatch = Stopwatch();
+    _timer = Timer.periodic(const Duration(milliseconds: 100), (timer) {
+      setState(() {});
+    });
+  }
+
+  @override
+  void dispose() {
+    _timer.cancel();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(
-          leading: IconButton(
-            icon: const Icon(Icons.arrow_back, color: Colors.yellow),
-            onPressed: () {
-              Navigator.pop(context);
-            },
-          ),
-          title: Text(timerName.toUpperCase(),
-              style: const TextStyle(color: Colors.yellow, letterSpacing: 3)),
-          elevation: 0,
+      appBar: AppBar(
+        leading: IconButton(
+          icon: const Icon(Icons.arrow_back, color: Colors.yellow),
+          onPressed: () {
+            Navigator.pop(context);
+          },
         ),
-        body: SafeArea(
-          child: Center(
-              child: Column(
+        title: Text(widget.timerName.toUpperCase(),
+            style: const TextStyle(color: Colors.yellow, letterSpacing: 3)),
+        elevation: 0,
+      ),
+      body: SafeArea(
+        child: Center(
+          child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               CupertinoButton(
-                onPressed: () {},
+                onPressed:
+                    _stopwatch.isRunning ? _stopwatch.stop : _stopwatch.start,
                 padding: const EdgeInsets.all(0),
                 child: Container(
                   height: 250,
@@ -37,9 +62,9 @@ class TimerPage extends StatelessWidget {
                       width: 4,
                     ),
                   ),
-                  child: const Text(
-                    '00:00:00',
-                    style: TextStyle(
+                  child: Text(
+                    '${_stopwatch.elapsed.inHours.toString().padLeft(2, '0')}:${(_stopwatch.elapsed.inMinutes % 60).toString().padLeft(2, '0')}:${(_stopwatch.elapsed.inSeconds % 60).toString().padLeft(2, '0')}',
+                    style: const TextStyle(
                         color: Colors.yellow,
                         fontSize: 40,
                         fontWeight: FontWeight.bold),
@@ -48,13 +73,21 @@ class TimerPage extends StatelessWidget {
               ),
               const SizedBox(height: 50),
               IconButton(
-                onPressed: () {},
+                onPressed: () {
+                  if (!_stopwatch.isRunning) {
+                    _stopwatch.start();
+                    print('start');
+                  }
+                  print('timer is running');
+                },
                 icon: const Icon(Icons.play_arrow),
                 iconSize: 50,
                 color: Colors.yellow,
               ),
             ],
-          )),
-        ));
+          ),
+        ),
+      ),
+    );
   }
 }
