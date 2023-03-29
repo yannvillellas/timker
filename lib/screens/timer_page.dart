@@ -74,16 +74,28 @@ class _TimerPageState extends State<TimerPage> {
               const SizedBox(height: 50),
               IconButton(
                 onPressed: () {
-                  if (!_stopwatch.isRunning) {
+                  if (_stopwatch.isRunning) {
+                    _stopwatch.stop();
+                  } else {
                     _stopwatch.start();
-                    print('start');
                   }
-                  print('timer is running');
+                  setState(() {});
                 },
-                icon: const Icon(Icons.play_arrow),
+                icon:
+                    Icon(_stopwatch.isRunning ? Icons.pause : Icons.play_arrow),
                 iconSize: 50,
                 color: Colors.yellow,
               ),
+              if (!_stopwatch.isRunning && _stopwatch.elapsedMilliseconds > 0)
+                IconButton(
+                  onPressed: () {
+                    _stopwatch.reset();
+                    setState(() {});
+                  },
+                  icon: const Icon(Icons.replay),
+                  iconSize: 50,
+                  color: Colors.yellow,
+                ),
             ],
           ),
         ),
