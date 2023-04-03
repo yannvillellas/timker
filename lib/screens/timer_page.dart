@@ -29,6 +29,14 @@ class _TimerPageState extends State<TimerPage> {
     super.dispose();
   }
 
+  Duration getElapsedTime() {
+    return _stopwatch.elapsed;
+  }
+
+  String getElapsedTimeAsString() {
+    return '${_stopwatch.elapsed.inHours.toString().padLeft(2, '0')}:${(_stopwatch.elapsed.inMinutes % 60).toString().padLeft(2, '0')}:${(_stopwatch.elapsed.inSeconds % 60).toString().padLeft(2, '0')}';
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -63,7 +71,7 @@ class _TimerPageState extends State<TimerPage> {
                     ),
                   ),
                   child: Text(
-                    '${_stopwatch.elapsed.inHours.toString().padLeft(2, '0')}:${(_stopwatch.elapsed.inMinutes % 60).toString().padLeft(2, '0')}:${(_stopwatch.elapsed.inSeconds % 60).toString().padLeft(2, '0')}',
+                    getElapsedTimeAsString(),
                     style: const TextStyle(
                         color: Colors.yellow,
                         fontSize: 40,

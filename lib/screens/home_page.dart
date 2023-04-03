@@ -3,6 +3,7 @@ import 'package:hive_flutter/hive_flutter.dart';
 import 'package:timker/data/database.dart';
 import 'package:timker/util/dialog_box.dart';
 import 'package:timker/util/timer_card.dart';
+import 'package:timker/screens/timer_page.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -30,7 +31,7 @@ class _HomePageState extends State<HomePage> {
   //save a new timer
   void saveNewTimer() {
     setState(() {
-      db.timerList.add([_controller.text, 10]);
+      db.timerList.add([_controller.text, 0]);
       _controller.clear();
     });
     Navigator.of(context).pop();
@@ -78,7 +79,7 @@ class _HomePageState extends State<HomePage> {
         itemBuilder: (context, index) {
           return TimerCard(
             timerName: db.timerList[index][0],
-            timerDuration: db.timerList[index][1],
+            timerDurationInMs: db.timerList[index][1],
             removeTimer: (context) => _removeTimer(index),
           );
         },
