@@ -4,13 +4,13 @@ import 'package:timker/screens/timer_page.dart';
 
 class TimerCard extends StatelessWidget {
   final String timerName;
-  final int timerDurationInMs;
+  final int timeElapsed;
   final Function(BuildContext)? removeTimer;
 
   const TimerCard({
     super.key,
     required this.timerName,
-    required this.timerDurationInMs,
+    required this.timeElapsed,
     required this.removeTimer,
   });
 
@@ -40,8 +40,15 @@ class TimerCard extends StatelessWidget {
             ],
           ),
           child: GestureDetector(
-            onTap: () => Navigator.of(context).push(MaterialPageRoute(
-                builder: (context) => TimerPage(timerName: timerName))),
+            onTap: () async {
+              final result = await Navigator.of(context).push(MaterialPageRoute(
+                  builder: (context) => TimerPage(timerName: timerName)));
+              if (result != null) {
+                final elapsedTime = result['elapsedTime'] as Duration;
+                final timerName = result['timerName'] as String;
+                // save the elapsed time to local storage or do something else with it
+              }
+            },
             child: Container(
               width: MediaQuery.of(context).size.width,
               padding: const EdgeInsets.all(25.0),
@@ -62,7 +69,7 @@ class TimerCard extends StatelessWidget {
                   ),
                   const SizedBox(width: 10),
                   Text(
-                    '${(timerDurationInMs ~/ 60).toString().padLeft(2, '0')}:${(timerDurationInMs % 60).toString().padLeft(2, '0')}',
+                    '${(timeElapsed ~/ 60).toString().padLeft(2, '0')}:${(timeElapsed % 60).toString().padLeft(2, '0')}',
                     style: const TextStyle(color: Colors.black),
                   ),
                 ],

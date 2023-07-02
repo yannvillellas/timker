@@ -44,7 +44,10 @@ class _TimerPageState extends State<TimerPage> {
         leading: IconButton(
           icon: const Icon(Icons.arrow_back, color: Colors.yellow),
           onPressed: () {
-            Navigator.pop(context);
+            Navigator.of(context).pop({
+              'elapsedTime': _stopwatch.elapsed,
+              'timerName': widget.timerName
+            });
           },
         ),
         title: Text(widget.timerName.toUpperCase(),

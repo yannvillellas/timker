@@ -79,7 +79,7 @@ class _HomePageState extends State<HomePage> {
         itemBuilder: (context, index) {
           return TimerCard(
             timerName: db.timerList[index][0],
-            timerDurationInMs: db.timerList[index][1],
+            timeElapsed: db.timerList[index][1],
             removeTimer: (context) => _removeTimer(index),
           );
         },
