@@ -1,0 +1,12 @@
+{
+  "@@locale": "en",
+    "appTitle": "Timker",
+    "@appTitle": {
+      "description": "The title of the application"
+    },
+
+    "work": "Work",
+    "@work": {
+      "description": "A sample timer label"
+    }
+}

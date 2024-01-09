@@ -1,20 +1,15 @@
 import 'package:flutter/material.dart';
 
-void main() {
-  runApp(const MainApp());
-}
+import 'src/app.dart';
+import 'src/settings/settings_controller.dart';
+import 'src/settings/settings_service.dart';
 
-class MainApp extends StatelessWidget {
-  const MainApp({super.key});
+void main() async {
+  final settingsController = SettingsController(SettingsService());
 
-  @override
-  Widget build(BuildContext context) {
-    return const MaterialApp(
-      home: Scaffold(
-        body: Center(
-          child: Text('Hello World!'),
-        ),
-      ),
-    );
-  }
+  await settingsController.loadSettings();
+
+  runApp(MyApp(
+    settingsController: settingsController,
+  ));
 }
