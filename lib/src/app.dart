@@ -51,14 +51,23 @@ class MyApp extends StatelessWidget {
           onGenerateTitle: (BuildContext context) =>
               AppLocalizations.of(context)!.appTitle,
           theme: ThemeData(
-            textTheme: ThemeData.light()
-                .textTheme
-                .apply(fontFamily: GoogleFonts.montserrat().fontFamily),
+            primaryColor: Colors.purple,
+            textTheme: ThemeData.light().textTheme.apply(
+                  fontFamily: GoogleFonts.montserrat().fontFamily,
+                  bodyColor: Colors.purple,
+                ),
+            appBarTheme: const AppBarTheme(
+              foregroundColor: Colors.purple,
+            ),
           ),
           darkTheme: ThemeData.dark().copyWith(
-            textTheme: ThemeData.dark()
-                .textTheme
-                .apply(fontFamily: GoogleFonts.montserrat().fontFamily),
+            textTheme: ThemeData.dark().textTheme.apply(
+                  fontFamily: GoogleFonts.montserrat().fontFamily,
+                  bodyColor: Colors.yellow,
+                ),
+            appBarTheme: const AppBarTheme(
+              foregroundColor: Colors.yellow,
+            ),
           ),
           themeMode: settingsController.themeMode,
           routerConfig: _router,
