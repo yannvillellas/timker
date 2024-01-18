@@ -5,8 +5,23 @@
       "description": "The title of the application"
     },
 
-    "work": "Work",
-    "@work": {
-      "description": "A sample timer label"
+    "settingsTitle": "Settings",
+    "@settingsTitle": {
+      "description": "The title of the settings page"
+    },
+
+    "settingsSystemTheme": "System theme",
+    "@settingsSystemTheme": {
+      "description": "The theme of the application"
+    },
+
+    "settingsLightTheme": "Light theme",
+    "@settingsLightTheme": {
+      "description": "The theme of the application"
+    },
+
+    "settingsDarkTheme": "Dark theme",
+    "@settingsDarkTheme": {
+      "description": "The theme of the application"
     }
 }

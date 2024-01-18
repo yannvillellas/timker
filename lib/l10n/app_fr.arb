@@ -1,5 +1,8 @@
 {
     "@@locale": "fr",
     "appTitle": "Timker App",
-    "work": "Travail"
+    "settingsTitle": "Paramètres",
+    "settingsSystemTheme": "Thème système",
+    "settingsLightTheme": "Thème clair",
+    "settingsDarkTheme": "Thème sombre"
 }
