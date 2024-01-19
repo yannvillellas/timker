@@ -9,7 +9,6 @@ class Home extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        // use localized strings in the app bar
         title: Text(AppLocalizations.of(context)!.appTitle),
         actions: [
           IconButton(
