@@ -39,18 +39,24 @@ class _SettingsViewState extends State<SettingsView> {
           items: [
             DropdownMenuItem(
               value: ThemeMode.system,
-              child: Text(AppLocalizations.of(context)!.settingsSystemTheme,
-                  style: Theme.of(context).textTheme.bodyLarge),
+              child: Text(
+                AppLocalizations.of(context)!.settingsSystemTheme,
+                style: Theme.of(context).textTheme.bodyMedium,
+              ),
             ),
             DropdownMenuItem(
               value: ThemeMode.light,
-              child: Text(AppLocalizations.of(context)!.settingsLightTheme,
-                  style: Theme.of(context).textTheme.bodyLarge),
+              child: Text(
+                AppLocalizations.of(context)!.settingsLightTheme,
+                style: Theme.of(context).textTheme.bodyMedium,
+              ),
             ),
             DropdownMenuItem(
               value: ThemeMode.dark,
-              child: Text(AppLocalizations.of(context)!.settingsDarkTheme,
-                  style: Theme.of(context).textTheme.bodyLarge),
+              child: Text(
+                AppLocalizations.of(context)!.settingsDarkTheme,
+                style: Theme.of(context).textTheme.bodyMedium,
+              ),
             ),
           ],
         ),
