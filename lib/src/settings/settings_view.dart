@@ -28,35 +28,62 @@ class _SettingsViewState extends State<SettingsView> {
       ),
       body: Padding(
         padding: const EdgeInsets.all(16),
-        child: DropdownButton<ThemeMode>(
-          value: _selectedTheme,
-          onChanged: (ThemeMode? newThemeMode) {
-            setState(() {
-              _selectedTheme = newThemeMode!;
-            });
-            widget.controller.updateThemeMode(newThemeMode);
-          },
-          items: [
-            DropdownMenuItem(
-              value: ThemeMode.system,
-              child: Text(
-                AppLocalizations.of(context)!.settingsSystemTheme,
-                style: Theme.of(context).textTheme.bodyMedium,
-              ),
+        child: Column(
+          children: [
+            DropdownButton<ThemeMode>(
+              value: _selectedTheme,
+              onChanged: (ThemeMode? newThemeMode) {
+                setState(() {
+                  _selectedTheme = newThemeMode!;
+                });
+                widget.controller.updateThemeMode(newThemeMode);
+              },
+              items: [
+                DropdownMenuItem(
+                  value: ThemeMode.system,
+                  child: Text(
+                    AppLocalizations.of(context)!.settingsSystemTheme,
+                    style: Theme.of(context).textTheme.bodyMedium,
+                  ),
+                ),
+                DropdownMenuItem(
+                  value: ThemeMode.light,
+                  child: Text(
+                    AppLocalizations.of(context)!.settingsLightTheme,
+                    style: Theme.of(context).textTheme.bodyMedium,
+                  ),
+                ),
+                DropdownMenuItem(
+                  value: ThemeMode.dark,
+                  child: Text(
+                    AppLocalizations.of(context)!.settingsDarkTheme,
+                    style: Theme.of(context).textTheme.bodyMedium,
+                  ),
+                ),
+              ],
             ),
-            DropdownMenuItem(
-              value: ThemeMode.light,
-              child: Text(
-                AppLocalizations.of(context)!.settingsLightTheme,
-                style: Theme.of(context).textTheme.bodyMedium,
-              ),
-            ),
-            DropdownMenuItem(
-              value: ThemeMode.dark,
-              child: Text(
-                AppLocalizations.of(context)!.settingsDarkTheme,
-                style: Theme.of(context).textTheme.bodyMedium,
-              ),
+            DropdownButton<Locale>(
+              value: Localizations.localeOf(context),
+              onChanged: (Locale? newLocale) {
+                if (newLocale == null) return;
+                setState(() {});
+              },
+              items: [
+                DropdownMenuItem(
+                  value: const Locale('en', ''),
+                  child: Text(
+                    "English",
+                    style: Theme.of(context).textTheme.bodyMedium,
+                  ),
+                ),
+                DropdownMenuItem(
+                  value: const Locale('fr', ''),
+                  child: Text(
+                    "Français",
+                    style: Theme.of(context).textTheme.bodyMedium,
+                  ),
+                ),
+              ],
             ),
           ],
         ),

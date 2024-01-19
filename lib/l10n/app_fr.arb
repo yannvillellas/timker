@@ -1,6 +1,7 @@
 {
     "@@locale": "fr",
     "appTitle": "Timker App",
+    "test": "Ceci est un test",
     "settingsTitle": "Paramètres",
     "settingsSystemTheme": "Thème système",
     "settingsLightTheme": "Thème clair",

@@ -5,6 +5,11 @@
       "description": "The title of the application"
     },
 
+    "test":"This is a test",
+    "@test": {
+      "description": "This is a test"
+    },
+
     "settingsTitle": "Settings",
     "@settingsTitle": {
       "description": "The title of the settings page"

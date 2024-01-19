@@ -52,12 +52,12 @@ class MyApp extends StatelessWidget {
               AppLocalizations.of(context)!.appTitle,
           theme: ThemeData(
             textTheme: Theme.of(context).textTheme.apply(
-                  fontFamily: GoogleFonts.montserrat().fontFamily,
+                  fontFamily: GoogleFonts.robotoMono().fontFamily,
                 ),
           ),
           darkTheme: ThemeData.dark().copyWith(
             textTheme: Theme.of(context).textTheme.apply(
-                  fontFamily: GoogleFonts.montserrat().fontFamily,
+                  fontFamily: GoogleFonts.robotoMono().fontFamily,
                   bodyColor: ThemeData.dark().textTheme.bodyMedium!.color,
                 ),
           ),

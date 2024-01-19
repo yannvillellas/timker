@@ -17,8 +17,8 @@ class Home extends StatelessWidget {
           ),
         ],
       ),
-      body: const Center(
-        child: Text("TEST"),
+      body: Center(
+        child: Text(AppLocalizations.of(context)!.test),
       ),
     );
   }

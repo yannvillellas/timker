@@ -12,11 +12,12 @@ class SettingsController with ChangeNotifier {
 
   // Make SettingsService a private variable so it is not used directly.
   final SettingsService _settingsService;
+  Locale _currentLocale = const Locale('en', '');
 
   // Make ThemeMode a private variable so it is not updated directly without
   // also persisting the changes with the SettingsService.
   late ThemeMode _themeMode;
-
+  Locale get currentLocale => _currentLocale;
   // Allow Widgets to read the user's preferred ThemeMode.
   ThemeMode get themeMode => _themeMode;
 
@@ -46,5 +47,12 @@ class SettingsController with ChangeNotifier {
     // Persist the changes to a local database or the internet using the
     // SettingService.
     await _settingsService.updateThemeMode(newThemeMode);
+  }
+
+  void updateLocale(Locale newLocale) {
+    _currentLocale = newLocale;
+
+    // Notify listeners that a change has occurred.
+    notifyListeners();
   }
 }
