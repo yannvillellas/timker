@@ -62,29 +62,7 @@ class _SettingsViewState extends State<SettingsView> {
                 ),
               ],
             ),
-            DropdownButton<Locale>(
-              value: Localizations.localeOf(context),
-              onChanged: (Locale? newLocale) {
-                if (newLocale == null) return;
-                setState(() {});
-              },
-              items: [
-                DropdownMenuItem(
-                  value: const Locale('en', ''),
-                  child: Text(
-                    "English",
-                    style: Theme.of(context).textTheme.bodyMedium,
-                  ),
-                ),
-                DropdownMenuItem(
-                  value: const Locale('fr', ''),
-                  child: Text(
-                    "Français",
-                    style: Theme.of(context).textTheme.bodyMedium,
-                  ),
-                ),
-              ],
-            ),
+            const SizedBox(height: 16),
           ],
         ),
       ),
