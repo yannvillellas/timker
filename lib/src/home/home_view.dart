@@ -75,27 +75,46 @@ class _HomeState extends State<Home> {
             onPressed: () => context.push('/settings'),
           ),
         ],
+        elevation: 1,
+        shape: Border(
+          bottom: BorderSide(
+            color: Theme.of(context).dividerColor,
+            width: 2.0,
+          ),
+        ),
       ),
       body: timers.isEmpty
           ? Center(child: Text(AppLocalizations.of(context)!.noTimers))
           : ReorderableListView(
-              padding: const EdgeInsets.all(16),
-              children: timers,
-              onReorder: (oldIndex, newIndex) {
-                setState(() {
-                  if (newIndex > oldIndex) {
-                    newIndex -= 1;
-                  }
-                  final TimerTile timer = timers.removeAt(oldIndex);
-                  timers.insert(newIndex, timer);
-                });
+              children: timers.map((timer) {
+                return Card(
+                  elevation: 0.3,
+                  key: timer.key,
+                  child: timer,
+                );
+              }).toList(),
+              onReorder: (oldIndex, newIndex) async {
+                if (newIndex > oldIndex) {
+                  newIndex -= 1;
+                }
+
+                TimerTile timer = timers.removeAt(oldIndex);
+                timers.insert(newIndex, timer);
+
+                setState(() {});
+
+                SharedPreferences prefs = await SharedPreferences.getInstance();
+                List<String>? storedTimers = prefs.getStringList('timers');
+                String timerData = storedTimers!.removeAt(oldIndex);
+                storedTimers.insert(newIndex, timerData);
+                await prefs.setStringList('timers', storedTimers);
               },
             ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
           _addTimer(
-            'New Timer',
-            const Duration(seconds: 30),
+            'New Timer #${timers.length + 1}',
+            const Duration(),
           );
         },
         child: const Icon(
