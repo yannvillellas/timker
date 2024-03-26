@@ -15,7 +15,8 @@ class Home extends StatefulWidget {
 }
 
 class _HomeState extends State<Home> {
-  List<TimerTile> timers = [];
+  List<TimerTile> _timers = [];
+  final List<TimerTile> _selectedTimers = [];
 
   @override
   void initState() {
@@ -27,7 +28,7 @@ class _HomeState extends State<Home> {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     List<String>? storedTimers = prefs.getStringList('timers');
     setState(() {
-      timers = (storedTimers ?? []).map((timer) {
+      _timers = (storedTimers ?? []).map((timer) {
         Map<String, dynamic> timerData = jsonDecode(timer);
         return TimerTile(
           key: UniqueKey(),
@@ -51,10 +52,25 @@ class _HomeState extends State<Home> {
     await prefs.setStringList('timers', storedTimers);
 
     setState(() {
-      timers.add(TimerTile(
+      _timers.add(TimerTile(
         key: UniqueKey(),
         timer: Timer(name: name, duration: duration),
       ));
+    });
+  }
+
+  _removeTimer(TimerTile timer) async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    List<String>? storedTimers = prefs.getStringList('timers');
+    storedTimers!.removeWhere((storedTimer) {
+      Map<String, dynamic> timerData = jsonDecode(storedTimer);
+      return timerData['name'] == timer.timer.name &&
+          timerData['duration'] == timer.timer.duration.inMilliseconds;
+    });
+    await prefs.setStringList('timers', storedTimers);
+
+    setState(() {
+      _timers.remove(timer);
     });
   }
 
@@ -69,12 +85,33 @@ class _HomeState extends State<Home> {
             fontSize: 32,
           ),
         ),
-        actions: [
-          IconButton(
-            icon: const Icon(Icons.settings),
-            onPressed: () => context.push('/settings'),
-          ),
-        ],
+        actions: _selectedTimers.isEmpty
+            ? [
+                IconButton(
+                  icon: const Icon(Icons.settings),
+                  onPressed: () => context.push('/settings'),
+                ),
+              ]
+            : [
+                if (_selectedTimers.length == 1)
+                  IconButton(
+                    icon: const Icon(Icons.edit),
+                    onPressed: () {
+                      // TODO: Implement edit functionality
+                    },
+                  ),
+                IconButton(
+                  icon: const Icon(Icons.delete),
+                  onPressed: () {
+                    for (var timer in _selectedTimers) {
+                      _removeTimer(timer);
+                    }
+                    setState(() {
+                      _selectedTimers.clear();
+                    });
+                  },
+                ),
+              ],
         elevation: 1,
         shape: Border(
           bottom: BorderSide(
@@ -83,14 +120,44 @@ class _HomeState extends State<Home> {
           ),
         ),
       ),
-      body: timers.isEmpty
+      body: _timers.isEmpty
           ? Center(child: Text(AppLocalizations.of(context)!.noTimers))
           : ReorderableListView(
-              children: timers.map((timer) {
+              children: _timers.map((timer) {
                 return Card(
                   elevation: 0.3,
                   key: timer.key,
-                  child: timer,
+                  child: InkWell(
+                    onTap: () {
+                      setState(() {
+                        if (_selectedTimers.contains(timer)) {
+                          _selectedTimers.remove(timer);
+                        } else {
+                          _selectedTimers.add(timer);
+                        }
+                      });
+                    },
+                    onLongPress: () {
+                      setState(() {
+                        if (_selectedTimers.contains(timer)) {
+                          _selectedTimers.remove(timer);
+                        } else {
+                          _selectedTimers.add(timer);
+                        }
+                      });
+                    },
+                    child: Container(
+                      decoration: BoxDecoration(
+                        border: Border.all(
+                          color: _selectedTimers.contains(timer)
+                              ? Theme.of(context).colorScheme.secondary
+                              : Colors.transparent,
+                          width: 2.0,
+                        ),
+                      ),
+                      child: timer,
+                    ),
+                  ),
                 );
               }).toList(),
               onReorder: (oldIndex, newIndex) async {
@@ -98,8 +165,8 @@ class _HomeState extends State<Home> {
                   newIndex -= 1;
                 }
 
-                TimerTile timer = timers.removeAt(oldIndex);
-                timers.insert(newIndex, timer);
+                TimerTile timer = _timers.removeAt(oldIndex);
+                _timers.insert(newIndex, timer);
 
                 setState(() {});
 
@@ -113,7 +180,7 @@ class _HomeState extends State<Home> {
       floatingActionButton: FloatingActionButton(
         onPressed: () {
           _addTimer(
-            'New Timer #${timers.length + 1}',
+            'New Timer #${_timers.length + 1}',
             const Duration(),
           );
         },
