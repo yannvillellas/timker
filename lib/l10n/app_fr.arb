@@ -5,5 +5,6 @@
     "settingsTitle": "Paramètres",
     "settingsSystemTheme": "Thème système",
     "settingsLightTheme": "Thème clair",
-    "settingsDarkTheme": "Thème sombre"
+    "settingsDarkTheme": "Thème sombre",
+    "noTimers": "Aucun minuteur"
 }

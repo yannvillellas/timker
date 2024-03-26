@@ -28,5 +28,10 @@
     "settingsDarkTheme": "Dark theme",
     "@settingsDarkTheme": {
       "description": "The theme of the application"
+    },
+
+    "noTimers": "No timers",
+    "@noTimers": {
+      "description": "No timers"
     }
 }

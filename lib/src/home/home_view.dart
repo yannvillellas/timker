@@ -1,6 +1,9 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import 'util/timer_tile.dart';
 
@@ -12,24 +15,49 @@ class Home extends StatefulWidget {
 }
 
 class _HomeState extends State<Home> {
-  final List<TimerTile> timers = [
-    TimerTile(
+  List<TimerTile> timers = [];
+
+  @override
+  void initState() {
+    super.initState();
+    _loadTimers();
+  }
+
+  _loadTimers() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    List<String>? storedTimers = prefs.getStringList('timers');
+    setState(() {
+      timers = (storedTimers ?? []).map((timer) {
+        Map<String, dynamic> timerData = jsonDecode(timer);
+        return TimerTile(
+          key: UniqueKey(),
+          timer: Timer(
+            name: timerData['name'],
+            duration: Duration(milliseconds: timerData['duration']),
+          ),
+        );
+      }).toList();
+    });
+  }
+
+  _addTimer(String name, Duration duration) async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    List<String>? storedTimers = prefs.getStringList('timers') ?? [];
+    Map<String, dynamic> timerData = {
+      'name': name,
+      'duration': duration.inMilliseconds,
+    };
+    storedTimers.add(jsonEncode(timerData));
+    await prefs.setStringList('timers', storedTimers);
+
+    setState(() {
+      timers.add(TimerTile(
         key: UniqueKey(),
-        name: "Timer 1",
-        duration: const Duration(minutes: 25)),
-    TimerTile(
-        key: UniqueKey(),
-        name: "Timer 2",
-        duration: const Duration(minutes: 30)),
-    TimerTile(
-        key: UniqueKey(),
-        name: "Timer 3",
-        duration: const Duration(minutes: 35)),
-    TimerTile(
-        key: UniqueKey(),
-        name: "Timer 4",
-        duration: const Duration(minutes: 40, seconds: 30)),
-  ];
+        timer: Timer(name: name, duration: duration),
+      ));
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -48,21 +76,28 @@ class _HomeState extends State<Home> {
           ),
         ],
       ),
-      body: ReorderableListView(
-        padding: const EdgeInsets.all(16),
-        children: timers,
-        onReorder: (oldIndex, newIndex) {
-          setState(() {
-            if (newIndex > oldIndex) {
-              newIndex -= 1;
-            }
-            final TimerTile timer = timers.removeAt(oldIndex);
-            timers.insert(newIndex, timer);
-          });
-        },
-      ),
+      body: timers.isEmpty
+          ? Center(child: Text(AppLocalizations.of(context)!.noTimers))
+          : ReorderableListView(
+              padding: const EdgeInsets.all(16),
+              children: timers,
+              onReorder: (oldIndex, newIndex) {
+                setState(() {
+                  if (newIndex > oldIndex) {
+                    newIndex -= 1;
+                  }
+                  final TimerTile timer = timers.removeAt(oldIndex);
+                  timers.insert(newIndex, timer);
+                });
+              },
+            ),
       floatingActionButton: FloatingActionButton(
-        onPressed: () {},
+        onPressed: () {
+          _addTimer(
+            'New Timer',
+            const Duration(seconds: 30),
+          );
+        },
         child: const Icon(
           Icons.add,
         ),
